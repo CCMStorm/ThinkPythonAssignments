@@ -12,8 +12,10 @@ def area (radius):
 def circumference (radius):
     return 2 * math.pi * radius
 # 3. Define volume(radius, height): 
+def volume(radius, height):
 #    - Call area(radius) and multiply by height.
 #    - Return the result.
+    return area(radius) * height
 
 # PROGRAM LOGIC
 # 1. Input for radius (float)
@@ -22,4 +24,6 @@ radius = float(input("Enter the radius of the circle: "))
 print("Area:", area(radius))
 print("Circumference:", circumference(radius))
 # 3. Input for height (float)
+height = float(input("Enter the height of the cylinder: "))
 # 4. Call and print volume.
+print("Volume:", volume(radius, height))
