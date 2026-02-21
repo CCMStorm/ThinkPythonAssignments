@@ -5,6 +5,11 @@
 # 1. Define verify_pin(): 
 #    - Create a loop that asks for a PIN until it equals "1234"
 #    - Return True
+def verify_pin():
+    while True:
+        pin = input("Enter your PIN: ")
+        if pin == "1234":
+            return True
 # 2. Define withdraw(balance, amount):
 #    - Check if enough money exists
 #    - Return the new (or old) balance
@@ -15,3 +20,4 @@
 # 3. Get withdrawal amount from user input
 # 4. Update current_balance by calling withdraw()
 # 5. Print the final balance
+verify_pin()
