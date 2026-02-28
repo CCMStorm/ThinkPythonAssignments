@@ -18,12 +18,6 @@ def is_palindrome(word):
 
 # PROGRAM LOGIC
 # Ask the user for a word
-word = input("Enter a word: ")
 # Call is_palindrome on the user's word
-result = is_palindrome(word)
 # If True, print "(word) is a palindrome"
 # Else, print "(word) is not a palindrome"
-if result:
-    print(f"{word} is a palindrome")
-else:
-    print(f"{word} is not a palindrome")
