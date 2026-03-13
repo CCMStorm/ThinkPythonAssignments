@@ -55,29 +55,28 @@ def validate_code():
             return code
         else:
             print("Invalid code. Please enter B, S, or L.")
-#
-code = validate_code()
-
-start_odometer = float(input("Start Odometer: "))
-end_odometer = float(input("End Odometer: "))
-days_rented = int(input("Days Rented: "))
-
-# Distance calculation (important part for midpoint)
-total_miles = end_odometer - start_odometer
-
-charged_miles = calculate_charged_miles(total_miles)
-
-print("\n--- MIDPOINT TEST ---")
-print("Total Miles Driven:", total_miles)
-print("Miles Charged (over 100):", charged_miles)
 
 
 # PROGRAM LOGIC
 # 1. Get valid classification code
+classification_code = validate_code()
 # 2. Get start odometer
+start_odometer = int(input("Enter start odometer reading: "))
 # 3. Get end odometer
+end_odometer = int(input("Enter end odometer reading: "))
 # 4. Get days rented
+days_rented = int(input("Enter number of days rented: "))
 # 5. Calculate total miles
+total_miles = end_odometer - start_odometer
 # 6. Calculate charged miles
+charged_miles = calculate_charged_miles(total_miles)
 # 7. Calculate total bill
+total_bill = calculate_total_bill(classification_code, days_rented, total_miles)
 # 8. Print rental summary
+classification_name = get_classification_name(classification_code)
+print("\nRental Summary:")
+print(f"Classification: {classification_name}")
+print(f"Total miles driven: {total_miles}")
+print(f"Charged miles: {charged_miles}")
+print(f"Total bill: ${total_bill:.2f}")
+
