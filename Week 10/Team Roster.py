@@ -27,17 +27,18 @@ def is_on_roster(roster, name):
             return True
     return False
 
-roster = []
-
-add_players(roster)
-
-# Test to confirm names were added
-print("Current roster:", roster)
-
-
 # PROGRAM LOGIC
 # - Create empty list called roster
+roster = []
 # - Call add_players(roster)
+add_players(roster)
 # - Ask user for a name to search
+search_name = input("Enter a name to search on the roster: ")
 # - Call is_on_roster(roster, name)
+found = is_on_roster(roster, search_name)
 # - Print result based on True/False
+if found:
+    print(f"{search_name} is on the roster.")
+else:
+    print(f"{search_name} is not on the roster.")
+    
