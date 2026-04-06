@@ -7,10 +7,11 @@
 #     calculate perimeter = 2 * (length + width)
 #     pack both values into a tuple (area, perimeter)
 #     return the tuple
+def calculate_rectangle(length, width):
+    area = length * width
+    perimeter = 2 * (length + width)
+    return (area, perimeter)
 
 # PROGRAM LOGIC
-# get user input for length
-# get user input for width
-# call calculate_rectangle function
-# unpack returned tuple into my_area and my_perimeter
-# print results clearly
+result = calculate_rectangle(5, 10)
+print(result)   # Expected: (50, 30)
