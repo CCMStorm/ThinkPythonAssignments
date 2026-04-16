@@ -3,30 +3,16 @@
 
 # CLASS DEFINITIONS
 class Book:
-    # __init__(self, title, author)
-        # set self.title = title
-        # set self.author = author
-        # set self.is_available = True (default)
-
-    # __str__(self)
-        # if self.is_available is True
-            # status = "Available"
-        # else
-            # status = "Checked Out"
-        # return formatted string with title, author, and status
-
-    # checkout(self)
-        # set self.is_available = False
-
-    # return_book(self)
-        # set self.is_available = True
-
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+        self.is_available = True
 
 # PROGRAM LOGIC
-# create at least two Book objects
+# create one book object
+my_book = Book("Think Python", "Allen Downey")
 
-# print both books
-
-# call checkout() on one book
-
-# print both books again to show updated status
+# test that object works
+print(my_book.title)
+print(my_book.author)
+print(my_book.is_available)
