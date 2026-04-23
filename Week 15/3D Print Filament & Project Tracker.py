@@ -5,6 +5,7 @@ import csv
 import os
 
 FILE_NAME = "print_projects.csv"
+SUMMARY_FILE = "project_summary.txt"
 
 
 def setup_file():
@@ -20,32 +21,38 @@ def setup_file():
             ])
 
 
-def get_float(prompt):
+def get_float(prompt, allow_zero=True):
     while True:
         try:
-            value = float(input(prompt))
+            value = float(input(prompt).strip())
+
             if value < 0:
                 print("Please enter a positive number.")
+            elif value == 0 and not allow_zero:
+                print("This value cannot be zero.")
             else:
                 return value
+
         except ValueError:
             print("Invalid input. Please enter a number.")
 
 
-def add_project():
-    project_name = input("Enter project name: ").strip()
+def get_project_name():
+    while True:
+        project_name = input("Enter project name: ").strip()
 
-    if project_name == "":
-        print("Project name cannot be empty.")
-        return
+        if project_name == "":
+            print("Project name cannot be empty.")
+        else:
+            return project_name
+
+
+def add_project():
+    project_name = get_project_name()
 
     filament_used = get_float("Enter filament used in grams: ")
     spool_cost = get_float("Enter spool cost in dollars: ")
-    spool_weight = get_float("Enter spool weight in grams: ")
-
-    if spool_weight == 0:
-        print("Spool weight cannot be zero.")
-        return
+    spool_weight = get_float("Enter spool weight in grams: ", allow_zero=False)
 
     estimated_cost = filament_used * (spool_cost / spool_weight)
 
@@ -63,6 +70,8 @@ def add_project():
 
 
 def view_projects():
+    setup_file()
+
     with open(FILE_NAME, "r") as file:
         reader = csv.reader(file)
         rows = list(reader)
@@ -73,22 +82,31 @@ def view_projects():
 
     print("\nSaved 3D Print Projects:")
     for row in rows[1:]:
-        print(f"- {row[0]} | Filament: {row[1]}g | Estimated Cost: ${row[4]}")
+        if len(row) == 5:
+            print(f"- {row[0]} | Filament: {row[1]}g | Estimated Cost: ${row[4]}")
     print()
 
 
 def total_cost():
+    setup_file()
+
+    total = 0
+
     with open(FILE_NAME, "r") as file:
         reader = csv.DictReader(file)
-        total = 0
 
         for row in reader:
-            total += float(row["Estimated Cost"])
+            try:
+                total += float(row["Estimated Cost"])
+            except ValueError:
+                print("Skipped a row with invalid cost data.")
 
     print(f"Total estimated filament cost for all projects: ${total:.2f}")
 
 
 def export_summary():
+    setup_file()
+
     with open(FILE_NAME, "r") as file:
         reader = csv.DictReader(file)
         projects = list(reader)
@@ -97,7 +115,7 @@ def export_summary():
         print("No projects to export.")
         return
 
-    with open("project_summary.txt", "w") as file:
+    with open(SUMMARY_FILE, "w") as file:
         file.write("3D Print Project Summary\n")
         file.write("------------------------\n")
 
@@ -108,7 +126,7 @@ def export_summary():
                 f"${project['Estimated Cost']} estimated cost\n"
             )
 
-    print("Summary exported to project_summary.txt")
+    print(f"Summary exported to {SUMMARY_FILE}")
 
 
 def main():
