@@ -1,5 +1,5 @@
 # NAME: task_manager.py
-# PROJECT: Personal Task Manager (Feature: History)
+# PROJECT: Personal Task Manager
 
 HISTORY_FILE = "completed_tasks.txt"
 
@@ -11,8 +11,7 @@ def add_task(tasks):
         priority = input("Enter priority (1 = High, 2 = Medium, 3 = Low): ").strip()
         if priority in ["1", "2", "3"]:
             break
-        else:
-            print("Invalid input. Please enter 1, 2, or 3.")
+        print("Invalid input. Please enter 1, 2, or 3.")
 
     task = {
         "name": name,
@@ -48,7 +47,6 @@ def complete_task(tasks):
         if 1 <= choice <= len(tasks):
             completed_task = tasks.pop(choice - 1)
 
-            # Save to history file
             with open(HISTORY_FILE, "a") as file:
                 file.write(completed_task["name"] + "\n")
 
@@ -77,6 +75,15 @@ def view_history():
         print("No history file found yet.\n")
 
 
+def what_is_next(tasks):
+    for task in tasks:
+        if task["priority"] == 1:
+            print(f"Next High Priority task: {task['name']}\n")
+            return
+
+    print("You have no High Priority tasks right now. Great job staying organized!\n")
+
+
 def main():
     tasks = []
 
@@ -86,7 +93,8 @@ def main():
         print("2. View Tasks")
         print("3. Complete Task")
         print("4. View Completed History")
-        print("5. Exit")
+        print("5. What is next?")
+        print("6. Exit")
 
         choice = input("Choose an option: ").strip()
 
@@ -99,6 +107,8 @@ def main():
         elif choice == "4":
             view_history()
         elif choice == "5":
+            what_is_next(tasks)
+        elif choice == "6":
             print("Goodbye!")
             break
         else:
