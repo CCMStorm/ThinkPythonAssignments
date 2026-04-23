@@ -11,7 +11,13 @@ def setup_file():
     if not os.path.exists(FILE_NAME):
         with open(FILE_NAME, "w", newline="") as file:
             writer = csv.writer(file)
-            writer.writerow(["Project Name", "Filament Used (g)", "Spool Cost", "Spool Weight (g)", "Estimated Cost"])
+            writer.writerow([
+                "Project Name",
+                "Filament Used (g)",
+                "Spool Cost",
+                "Spool Weight (g)",
+                "Estimated Cost"
+            ])
 
 
 def get_float(prompt):
@@ -41,8 +47,7 @@ def add_project():
         print("Spool weight cannot be zero.")
         return
 
-    cost_per_gram = spool_cost / spool_weight
-    estimated_cost = filament_used * cost_per_gram
+    estimated_cost = filament_used * (spool_cost / spool_weight)
 
     with open(FILE_NAME, "a", newline="") as file:
         writer = csv.writer(file)
@@ -58,37 +63,52 @@ def add_project():
 
 
 def view_projects():
-    try:
-        with open(FILE_NAME, "r") as file:
-            reader = csv.reader(file)
-            rows = list(reader)
+    with open(FILE_NAME, "r") as file:
+        reader = csv.reader(file)
+        rows = list(reader)
 
-        if len(rows) <= 1:
-            print("No projects saved yet.")
-            return
+    if len(rows) <= 1:
+        print("No projects saved yet.")
+        return
 
-        print("\nSaved 3D Print Projects:")
-        for row in rows[1:]:
-            print(f"- {row[0]} | Filament: {row[1]}g | Estimated Cost: ${row[4]}")
-        print()
-
-    except FileNotFoundError:
-        print("No saved project file found yet.")
+    print("\nSaved 3D Print Projects:")
+    for row in rows[1:]:
+        print(f"- {row[0]} | Filament: {row[1]}g | Estimated Cost: ${row[4]}")
+    print()
 
 
 def total_cost():
-    try:
-        with open(FILE_NAME, "r") as file:
-            reader = csv.DictReader(file)
-            total = 0
+    with open(FILE_NAME, "r") as file:
+        reader = csv.DictReader(file)
+        total = 0
 
-            for row in reader:
-                total += float(row["Estimated Cost"])
+        for row in reader:
+            total += float(row["Estimated Cost"])
 
-        print(f"Total estimated filament cost for all projects: ${total:.2f}")
+    print(f"Total estimated filament cost for all projects: ${total:.2f}")
 
-    except FileNotFoundError:
-        print("No saved project file found yet.")
+
+def export_summary():
+    with open(FILE_NAME, "r") as file:
+        reader = csv.DictReader(file)
+        projects = list(reader)
+
+    if len(projects) == 0:
+        print("No projects to export.")
+        return
+
+    with open("project_summary.txt", "w") as file:
+        file.write("3D Print Project Summary\n")
+        file.write("------------------------\n")
+
+        for project in projects:
+            file.write(
+                f"{project['Project Name']} - "
+                f"{project['Filament Used (g)']}g used - "
+                f"${project['Estimated Cost']} estimated cost\n"
+            )
+
+    print("Summary exported to project_summary.txt")
 
 
 def main():
@@ -99,7 +119,8 @@ def main():
         print("1. Add Print Project")
         print("2. View Saved Projects")
         print("3. View Total Filament Cost")
-        print("4. Exit")
+        print("4. Export Project Summary")
+        print("5. Exit")
 
         choice = input("Choose an option: ").strip()
 
@@ -110,10 +131,12 @@ def main():
         elif choice == "3":
             total_cost()
         elif choice == "4":
+            export_summary()
+        elif choice == "5":
             print("Goodbye!")
             break
         else:
-            print("Invalid choice. Please choose 1, 2, 3, or 4.")
+            print("Invalid choice. Please choose 1, 2, 3, 4, or 5.")
 
 
 if __name__ == "__main__":
