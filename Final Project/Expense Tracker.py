@@ -1,4 +1,4 @@
-# NAME: expense_tracker.py
+# NAME: expense tracker.py
 
 # IMPORT STATEMENTS
 # No imports needed
@@ -9,6 +9,19 @@
 # Ask user for category, vendor, amount, and date
 # Store one expense as a dictionary
 # Add that dictionary to the expenses list
+def add_expense(expenses):
+    category = input("Enter Category: ")
+    vendor = input("Enter Vendor: ")
+    amount = float(input("Enter Amount: "))
+    date = input("Enter Date: ")
+    expense = {
+        "category": category,
+        "vendor": vendor,
+        "amount": amount,
+        "date": date
+    }
+    expenses.append(expense)
+
 
 # total_all function:
 # Loop through all expense dictionaries
@@ -42,3 +55,22 @@
 # If user chooses 1, add expense
 # If user chooses 2, show totals menu
 # If user chooses 3, exit program
+
+expenses = []
+
+while True:
+    print("\n--- Expense Tracker ---")
+    print("1. Add New Expense")
+    print("2. View Raw Expense List")
+    print("3. Exit")
+
+    selection = input("Selection: ")
+
+    if selection == "1":
+        add_expense(expenses)
+
+    if selection == "2":
+        print(expenses)
+
+    if selection == "3":
+        break
